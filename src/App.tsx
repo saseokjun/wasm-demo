@@ -1,26 +1,39 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react'
+import './App.css'
+import waApi from './wa-api'
 
 const App: React.FC = () => {
+  const [value, setValue] = useState(5)
+  const [result, setResult] = useState()
+  
+  const onChangeValue = (e: any) => {
+    const { value } = e.target
+    setValue(value)
+  }
+
+  const onClickButton = () => {
+    async function fac(value: number){
+      const res = (await waApi).factorial(value)
+      setResult(res)
+    }
+    fac(value)
+  }
+  // async function func(){
+  //   const result = (await waApi).scramble("string to scramble")
+  //   console.log(result)
+  // }
+  // func()
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <div>
+        The factorial of
+        <input value={value} onChange={onChangeValue} />
+        is {result}
+      </div>
+      <button onClick={onClickButton}>Calculate</button>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
